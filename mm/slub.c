@@ -682,6 +682,9 @@ static void slab_err(struct kmem_cache *s, struct page *page,
 	print_page_info(page);
 	dump_stack();
 	slab_panic("slab error");
+#ifdef CONFIG_SLUB_DEBUG_ON
+	BUG();
+#endif
 }
 
 static void init_object(struct kmem_cache *s, void *object, u8 val)
@@ -1132,6 +1135,9 @@ fail:
 	slab_unlock(page);
 	spin_unlock_irqrestore(&n->list_lock, *flags);
 	slab_fix(s, "Object at 0x%p not freed", object);
+#ifdef CONFIG_SLUB_DEBUG_ON
+	BUG();
+#endif
 	return NULL;
 }
 
