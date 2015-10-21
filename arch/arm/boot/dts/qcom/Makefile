@@ -136,7 +136,10 @@ dtb-$(CONFIG_ARCH_MSMCOBALT) += msmcobalt-sim.dtb \
 	msmcobalt-v2-cdp.dtb
 endif # CONFIG_MMI_DEVICE_DTBS
 
-dtb-$(CONFIG_ARCH_MSM8916) += msm8952-athene-p0.dtb
+dtb-$(CONFIG_ARCH_MSM8916) += msm8952-athene-p0.dtb \
+	msm8952-athene_16mp-p1.dtb \
+	msm8952-athene_13mp-p1.dtb \
+	msm8952-athene_power-p1.dtb
 
 # Motorola Device Trees
 dtb-$(CONFIG_ARCH_MSM8996) += msm8996-princeton-p1.dtb
