@@ -34,6 +34,13 @@
 			label = "ramoops_mem";
 		};
 	};
+
+	utags@1 {
+		compatible = "mmi,utags";
+		mmi,main-utags = "/dev/block/bootdevice/by-name/utags";
+		mmi,backup-utags = "/dev/block/bootdevice/by-name/utagsBackup";
+	};
+
 };
 
 &tlmm_pinmux {
