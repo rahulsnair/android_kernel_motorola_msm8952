@@ -5726,6 +5726,13 @@ static void msm8x16_wcd_configure_cap(struct snd_soc_codec *codec,
 	}
 }
 
+static void kfree_wcd_priv(struct msm8x16_wcd_priv *priv)
+{
+	if (priv->ospl2xx_wq)
+		destroy_workqueue(priv->ospl2xx_wq);
+	kfree(priv);
+}
+
 static int msm8x16_wcd_codec_probe(struct snd_soc_codec *codec)
 {
 	struct msm8x16_wcd_priv *msm8x16_wcd_priv;
@@ -5757,7 +5764,7 @@ static int msm8x16_wcd_codec_probe(struct snd_soc_codec *codec)
 			MSM8X16_DIGITAL_CODEC_REG_SIZE);
 	if (msm8x16_wcd->dig_base == NULL) {
 		dev_err(codec->dev, "%s ioremap failed\n", __func__);
-		kfree(msm8x16_wcd_priv);
+		kfree_wcd_priv(msm8x16_wcd_priv);
 		return -ENOMEM;
 	}
 	msm8x16_wcd_priv->spkdrv_reg =
@@ -5828,7 +5835,7 @@ static int msm8x16_wcd_codec_probe(struct snd_soc_codec *codec)
 			, GFP_KERNEL);
 	if (!msm8x16_wcd_priv->fw_data) {
 		iounmap(msm8x16_wcd->dig_base);
-		kfree(msm8x16_wcd_priv);
+		kfree_wcd_priv(msm8x16_wcd_priv);
 		return -ENOMEM;
 	}
 
@@ -5839,7 +5846,7 @@ static int msm8x16_wcd_codec_probe(struct snd_soc_codec *codec)
 		dev_err(codec->dev, "%s hwdep failed %d\n", __func__, ret);
 		iounmap(msm8x16_wcd->dig_base);
 		kfree(msm8x16_wcd_priv->fw_data);
-		kfree(msm8x16_wcd_priv);
+		kfree_wcd_priv(msm8x16_wcd_priv);
 		return ret;
 	}
 
@@ -5868,7 +5875,7 @@ static int msm8x16_wcd_codec_probe(struct snd_soc_codec *codec)
 		dev_err(codec->dev, "Failed to register adsp state notifier\n");
 		iounmap(msm8x16_wcd->dig_base);
 		kfree(msm8x16_wcd_priv->fw_data);
-		kfree(msm8x16_wcd_priv);
+		kfree_wcd_priv(msm8x16_wcd_priv);
 		registered_codec = NULL;
 		return -ENOMEM;
 	}
@@ -5887,7 +5894,7 @@ static int msm8x16_wcd_codec_remove(struct snd_soc_codec *codec)
 	atomic_set(&msm8x16_wcd_priv->on_demand_list[ON_DEMAND_MICBIAS].ref, 0);
 	iounmap(msm8x16_wcd->dig_base);
 	kfree(msm8x16_wcd_priv->fw_data);
-	kfree(msm8x16_wcd_priv);
+	kfree_wcd_priv(msm8x16_wcd_priv);
 
 	return 0;
 }
