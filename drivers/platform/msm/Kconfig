@@ -119,6 +119,14 @@ config SPS_SUPPORT_NDP_BAM
 	help
 	  No-Data-Path BAM is used to improve BAM performance.
 
+config QPNP_USER_RESET
+	tristate "QPNP PMIC User Rest"
+	depends on QPNP_POWER_ON
+	help
+	  Support to trigger a watchdog reset on nonsecure hardware by power
+	  and volume down key combination. A usb cable must be connected to
+	  trigger the watchdog reset.
+
 config QPNP_VIBRATOR
 	tristate "Vibrator support for QPNP PMIC"
 	depends on OF_SPMI
